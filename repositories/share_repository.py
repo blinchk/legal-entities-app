@@ -12,14 +12,14 @@ def get_shareholders(legal_entity_id: int):
     with Session(engine) as session:
         statement = text("""
         select 
-            les.owned_legal_entity_id as id,
+            les.owner_legal_entity_id as id,
             'LEGAL_ENTITY' as type,
             le.name as name,
             le.registry_code as code,
             les.is_founder as is_founder,
             les.share as share
         from legal_entity_share les
-            join legal_entity le on les.owned_legal_entity_id = le.id
+            join legal_entity le on les.owner_legal_entity_id = le.id
         where les.owned_legal_entity_id = :legal_entity_id
         union 
         select
