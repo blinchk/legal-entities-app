@@ -1,0 +1,38 @@
+version: "3"
+services:
+  db:
+    image: postgres
+    container_name: ariyhinutedb
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - db:/var/lib/postgresql/data
+    networks:
+      - backend
+  frontend:
+    container_name: ariyhingutefrontend
+    build: ./frontend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - backend
+  backend:
+    container_name: ariyhingutebackend
+    build: .
+    environment:
+      - DB_HOSTNAME=db
+    ports:
+      - "8000:8000"
+    networks:
+      - backend
+    depends_on:
+      - db
+volumes:
+  db:
+  frontend:
+  backend:
+networks:
+  backend:
